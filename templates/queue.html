@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Music Queue - Dice & Dine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/queue.css">
+    
+</head>
+
+    
+    
+<body>
+    <div class="logo">
+        <img src="https://lh3.googleusercontent.com/d/1euJelHOBxXp0_U-D6sa38DTn7EKsaOqG=s800" alt="Dice & Dine Cafe Logo">
+</div>
+    <div class="container">
+        <div class="queue-display">
+            <!-- Left side - Now Playing -->
+            <div class="now-playing">
+                <div class="album-container">
+                    <img src="" alt="Album art" id="album-art" class="rotating-album" />
+                </div>
+                <div class="track-info">
+                    <h3 id="track-name">Now Playing</h3>
+                    <p id="artist-name"></p>
+                </div>
+            </div>
+
+            <!-- Right side - QR Code -->
+            <div class="qr-section">
+                <h2>Join The Queue</h2>
+                <img id="qr" src="" alt="Join QR Code" class="qr-code" />
+            </div>
+        </div>
+
+        <!-- Bottom - Queue -->
+        <div class="upcoming-tracks">
+            <h2>Playing Next</h2>
+            <div id="queue-circles" class="queue-circles">
+                <!-- Queue items will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        async function fetchCurrentTrack() {
+            try {
+                const res = await fetch('/current');
+                const data = await res.json();
+
+                const albumArt = document.getElementById('album-art');
+                const trackName = document.getElementById('track-name');
+                const artistName = document.getElementById('artist-name');
+
+                if (data.message) {
+                    trackName.textContent = data.message;
+                    albumArt.style.display = 'none';
+                    artistName.textContent = '';
+                    return;
+                }
+
+                albumArt.src = data.image || '';
+                albumArt.style.display = 'block';
+                trackName.textContent = data.name;
+                artistName.textContent = data.artist;
+
+            } catch (err) {
+                console.error('Error fetching current track:', err);
+            }
+        }
+
+        async function fetchQueue() {
+    try {
+        const res = await fetch('/queue-spotify');
+        const data = await res.json();
+
+        const queueCircles = document.getElementById('queue-circles');
+
+        if (!data.queue || data.queue.length === 0) {
+            queueCircles.innerHTML = '<div class="empty-queue">Queue is empty</div>';
+            return;
+        }
+
+        const limitedQueue = data.queue.slice(0, 4);
+
+        // Get current items for comparison
+        const existingItems = Array.from(queueCircles.children);
+        const newTrackIds = limitedQueue.map(t => t.id);
+
+        // Remove extra DOM elements if needed
+        while (queueCircles.children.length > limitedQueue.length) {
+            queueCircles.removeChild(queueCircles.lastChild);
+        }
+
+        // Update or create each queue item
+        limitedQueue.forEach((track, index) => {
+            let queueItem = queueCircles.children[index];
+
+            // If not existing, create it
+            if (!queueItem) {
+                queueItem = document.createElement('div');
+                queueItem.className = 'queue-wrapper';
+                queueItem.innerHTML = `
+                    <div class="queue-item">
+                        <img src="${track.image}" alt="${track.name}" class="queue-image spinning" />
+                    </div>
+                    <div class="queue-text">
+                        <p class="track-title">${track.name}</p>
+                        <p class="track-artist">${track.artist}</p>
+                    </div>
+                `;
+                queueItem.setAttribute('data-id', track.id);
+                queueCircles.appendChild(queueItem);
+            } else {
+                // Check if it's the same track; if not, update content
+                const currentId = queueItem.getAttribute('data-id');
+                if (currentId !== track.id) {
+                    queueItem.setAttribute('data-id', track.id);
+                    const img = queueItem.querySelector('img');
+                    img.src = track.image;
+                    img.alt = track.name;
+
+                    queueItem.querySelector('.track-title').textContent = track.name;
+                    queueItem.querySelector('.track-artist').textContent = track.artist;
+                }
+            }
+        });
+    } catch (err) {
+        console.error("Error fetching queue:", err);
+    }
+}
+
+
+function generateQR() {
+    const url = 'https://music.dicedinecafe.com';
+    QRCode.toDataURL(url, {
+        width: 200,
+        height: 200,
+        color: {
+            dark: '#422800',
+            light: '#fbeee0'
+        }
+    }, function (err, url) {
+        if (err) return console.error(err);
+        document.getElementById('qr').src = url;
+    });
+}
+
+        function addBackgroundIcons() {
+            const icons = [
+                'fa-dice-one', 'fa-dice-two', 'fa-dice-three', 'fa-dice-four', 'fa-dice-five', 'fa-dice-six',
+                'fa-chess', 'fa-puzzle-piece', 'fa-chess-knight', 'fa-chess-queen', 'fa-trophy',
+                'fa-gamepad', 'fa-chess-board', 'fa-dice',
+                'fa-burger', 'fa-pizza-slice', 'fa-ice-cream', 'fa-cookie', 'fa-bacon',
+                'fa-bread-slice', 'fa-cheese', 'fa-egg', 'fa-cookie-bite',
+                'fa-mug-hot', 'fa-coffee', 'fa-glass-water', 'fa-martini-glass',
+                'fa-wine-glass', 'fa-beer-mug-empty', 'fa-whiskey-glass',
+                'fa-utensils', 'fa-plate-wheat', 'fa-kitchen-set', 'fa-bell-concierge',
+                'fa-fire-burner'
+            ];
+
+            for (let i = 0; i < 40; i++) {
+                const iconWrapper = document.createElement('div');
+                const sizeClass = Math.random() < 0.5 ? 'large' : Math.random() < 0.1 ? 'small' : '';
+                iconWrapper.className = `background-icon ${sizeClass}`;
+                iconWrapper.style.left = `${Math.random() * 95}%`;
+                iconWrapper.style.top = `${Math.random() * 95}%`;
+                iconWrapper.style.transform = `rotate(${Math.random() * 360}deg) scale(${1 + Math.random() * 0.8})`;
+
+                const icon = document.createElement('i');
+                icon.className = `fas ${icons[Math.floor(Math.random() * icons.length)]}`;
+                iconWrapper.appendChild(icon);
+
+                document.body.appendChild(iconWrapper);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchCurrentTrack();
+            fetchQueue();
+            generateQR();
+            addBackgroundIcons();
+
+            const REFRESH_INTERVAL = 1000; // 10 seconds
+            setInterval(fetchCurrentTrack, REFRESH_INTERVAL);
+            setInterval(fetchQueue, REFRESH_INTERVAL);
+        });
+    </script>
+</body>
+</html>
