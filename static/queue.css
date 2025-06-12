@@ -1,5 +1,21 @@
 /* Container Styles */
+.queue-wrapper.animating {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1000;
+    transition: all 0.8s ease-in-out;
+}
 
+/* Ensure proper stacking context */
+.now-playing {
+    position: relative;
+    z-index: 1;
+}
+
+.queue-circles {
+    position: relative;
+    z-index: 2;
+}
 .queue-container {
     background-color: #fbeee0;
     border: 2px solid #422800;
@@ -100,6 +116,7 @@ body {
     object-fit: cover;
     animation: none !important; /* Force no animation */
     transform: none !important; /* Prevent transform inheritance */
+    transition: transform 0.1s linear;
 }
 
 /* Queue Text Styles */
