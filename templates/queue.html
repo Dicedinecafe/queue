@@ -74,7 +74,7 @@
             }
         }
 
-        async function fetchQueue() {
+      async function fetchQueue() {
     try {
         const res = await fetch('/queue-spotify');
         const data = await res.json();
@@ -212,39 +212,6 @@ function rotateQueueImages() {
         img.style.transform = `rotate(${queueRotations[id]}deg)`;
     });
     requestAnimationFrame(rotateQueueImages);
-}
-
-function animateTrackTransition(fromQueueItem, toCurrentTrack) {
-    // Create a clone of the queue item for animation
-    const clone = fromQueueItem.cloneNode(true);
-    const fromRect = fromQueueItem.getBoundingClientRect();
-    const toRect = document.querySelector('.now-playing').getBoundingClientRect();
-
-    // Style the clone for animation
-    clone.style.position = 'fixed';
-    clone.style.left = `${fromRect.left}px`;
-    clone.style.top = `${fromRect.top}px`;
-    clone.style.width = `${fromRect.width}px`;
-    clone.style.height = `${fromRect.height}px`;
-    clone.style.transition = 'all 0.8s ease-in-out';
-    clone.style.zIndex = '1000';
-    clone.style.transform = 'scale(1)';
-
-    // Add clone to body
-    document.body.appendChild(clone);
-
-    // Trigger animation
-    requestAnimationFrame(() => {
-        clone.style.transform = 'scale(1.2) rotate(360deg)';
-        clone.style.left = `${toRect.left + toRect.width/2 - fromRect.width/2}px`;
-        clone.style.top = `${toRect.top + toRect.height/2 - fromRect.height/2}px`;
-        clone.style.opacity = '0';
-    });
-
-    // Remove clone after animation
-    setTimeout(() => {
-        clone.remove();
-    }, 800);
 }
     </script>
 </body>
