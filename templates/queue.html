@@ -192,8 +192,8 @@ function generateQR() {
     addBackgroundIcons();
 
     // Different refresh intervals
-    const TRACK_REFRESH = 100;  // 10 seconds for current track
-    const QUEUE_REFRESH = 100;   // 5 seconds for queue updates
+    const TRACK_REFRESH = 1000;  // 10 seconds for current track
+    const QUEUE_REFRESH = 1000;   // 5 seconds for queue updates
 
     // Set up separate intervals
     setInterval(fetchCurrentTrack, TRACK_REFRESH);
