@@ -82,17 +82,22 @@
         const queueCircles = document.getElementById('queue-circles');
 
         if (!data.queue || data.queue.length === 0) {
-            queueCircles.innerHTML = '<div class="empty-queue">Queue is empty</div>';
+            // Only add the empty message if not already there
+            if (!queueCircles.querySelector('.empty-queue')) {
+                queueCircles.innerHTML = '<div class="empty-queue">Queue is empty</div>';
+            }
             return;
+        }
+
+        // ✅ Remove the empty message if queue has items now
+        const emptyMessage = queueCircles.querySelector('.empty-queue');
+        if (emptyMessage) {
+            queueCircles.removeChild(emptyMessage);
         }
 
         const limitedQueue = data.queue.slice(0, 4);
 
-        // Get current items for comparison
-        const existingItems = Array.from(queueCircles.children);
-        const newTrackIds = limitedQueue.map(t => t.id);
-
-        // Remove extra DOM elements if needed
+        // Remove extra DOM elements
         while (queueCircles.children.length > limitedQueue.length) {
             queueCircles.removeChild(queueCircles.lastChild);
         }
@@ -101,10 +106,10 @@
         limitedQueue.forEach((track, index) => {
             let queueItem = queueCircles.children[index];
 
-            // If not existing, create it
             if (!queueItem) {
                 queueItem = document.createElement('div');
                 queueItem.className = 'queue-wrapper';
+                queueItem.setAttribute('data-id', track.id);
                 queueItem.innerHTML = `
                     <div class="queue-item">
                         <img src="${track.image}" alt="${track.name}" class="queue-image spinning" />
@@ -114,17 +119,14 @@
                         <p class="track-artist">${track.artist}</p>
                     </div>
                 `;
-                queueItem.setAttribute('data-id', track.id);
                 queueCircles.appendChild(queueItem);
             } else {
-                // Check if it's the same track; if not, update content
                 const currentId = queueItem.getAttribute('data-id');
                 if (currentId !== track.id) {
                     queueItem.setAttribute('data-id', track.id);
                     const img = queueItem.querySelector('img');
                     img.src = track.image;
                     img.alt = track.name;
-
                     queueItem.querySelector('.track-title').textContent = track.name;
                     queueItem.querySelector('.track-artist').textContent = track.artist;
                 }
@@ -134,6 +136,7 @@
         console.error("Error fetching queue:", err);
     }
 }
+
 
 
 function generateQR() {
@@ -182,15 +185,67 @@ function generateQR() {
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            fetchCurrentTrack();
-            fetchQueue();
-            generateQR();
-            addBackgroundIcons();
+    // Initial fetch
+    fetchCurrentTrack();
+    fetchQueue();
+    generateQR();
+    addBackgroundIcons();
 
-            const REFRESH_INTERVAL = 1000; // 10 seconds
-            setInterval(fetchCurrentTrack, REFRESH_INTERVAL);
-            setInterval(fetchQueue, REFRESH_INTERVAL);
-        });
+    // Different refresh intervals
+    const TRACK_REFRESH = 100;  // 10 seconds for current track
+    const QUEUE_REFRESH = 50;   // 5 seconds for queue updates
+
+    // Set up separate intervals
+    setInterval(fetchCurrentTrack, TRACK_REFRESH);
+    setInterval(fetchQueue, QUEUE_REFRESH);
+});
+const queueRotations = {};
+
+function rotateQueueImages() {
+    const images = document.querySelectorAll('.queue-wrapper .queue-image');
+    images.forEach((img, i) => {
+        const id = img.closest('.queue-wrapper').getAttribute('data-id');
+        if (!queueRotations[id]) {
+            queueRotations[id] = Math.random() * 360; // initial random rotation
+        }
+        queueRotations[id] += 0.3; // speed of rotation
+        img.style.transform = `rotate(${queueRotations[id]}deg)`;
+    });
+    requestAnimationFrame(rotateQueueImages);
+}
+
+function animateTrackTransition(fromQueueItem, toCurrentTrack) {
+    // Create a clone of the queue item for animation
+    const clone = fromQueueItem.cloneNode(true);
+    const fromRect = fromQueueItem.getBoundingClientRect();
+    const toRect = document.querySelector('.now-playing').getBoundingClientRect();
+
+    // Style the clone for animation
+    clone.style.position = 'fixed';
+    clone.style.left = `${fromRect.left}px`;
+    clone.style.top = `${fromRect.top}px`;
+    clone.style.width = `${fromRect.width}px`;
+    clone.style.height = `${fromRect.height}px`;
+    clone.style.transition = 'all 0.8s ease-in-out';
+    clone.style.zIndex = '1000';
+    clone.style.transform = 'scale(1)';
+
+    // Add clone to body
+    document.body.appendChild(clone);
+
+    // Trigger animation
+    requestAnimationFrame(() => {
+        clone.style.transform = 'scale(1.2) rotate(360deg)';
+        clone.style.left = `${toRect.left + toRect.width/2 - fromRect.width/2}px`;
+        clone.style.top = `${toRect.top + toRect.height/2 - fromRect.height/2}px`;
+        clone.style.opacity = '0';
+    });
+
+    // Remove clone after animation
+    setTimeout(() => {
+        clone.remove();
+    }, 800);
+}
     </script>
 </body>
 </html>
