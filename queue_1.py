@@ -18,10 +18,13 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', 'default_secret_key').encode()
+CLIENT_ID = '4781e6fbedae431dbbc4c586fcce9d06'
+CLIENT_SECRET = '09fcf15964624fc4a616abf76f2c4371'
+REFRESH_TOKEN = 'AQAC0LbZpQo6A78s5D5PMTjvbMRqwsiVaIshd8VXkKEioa6emtoJfhukyFH1d1yK08hYyyAXypIkErZ_FX9tkIvL68gHoyHeE7TfLfzGTujhsyWvzkJ22WuQ600bo7CNIGU'
 
-CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
-CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
-REFRESH_TOKEN = os.getenv('SPOTIFY_REFRESH_TOKEN')
+# CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
+# CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
+# REFRESH_TOKEN = os.getenv('SPOTIFY_REFRESH_TOKEN')
 
 TOKEN_URL = 'https://accounts.spotify.com/api/token'
 API_BASE_URL = 'https://api.spotify.com/v1'
