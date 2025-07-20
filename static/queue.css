@@ -1,340 +1,265 @@
-/* Container Styles */
-body {
+ * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            display: flex;
+            background: black;
+            overflow: hidden;
+            position: relative;
+        }
+ .qrcode {
+
     display: flex;
-    justify-content: flex-start;
-    height: 100vh;
-    padding-left: 2rem;
-    margin: 0;
-    background: #fff8ef;
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding-right: 2rem;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    max-width: 500px;
-    margin: 0 0 2rem 0;
-}
-
-.logo img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    display: block;
-}
-
-/* Main Layout */
-.queue-display {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 2rem;
-  width: 100%;
-}
-/* Now Playing + Playing Next Container */
-.now-playing-and-next {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
-}
-
-/* Now Playing Section */
-.now-playing {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    width: 100%;
-    margin-bottom: 2rem;
-}
-
-.album-container {
-    width: 380px;
-    height: 380px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 2px solid #422800;
-    box-shadow: #422800 4px 4px 0 0;
-    margin: 1.5rem;
-    background: #fff;
-}
-
-.rotating-album, .album-art {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    animation: rotate 20s linear infinite;
-    display: block;
-}
-
-@keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.track-info {
-    text-align: center;
-}
-
-.track-info h3,
-#track-name {
-    font-size: 2.5rem !important;
-    color: #422800;
-    font-family: "Luckiest Guy", sans-serif;
-    margin: 0 0 0.5rem 0;
-    line-height: 1.1;
-}
-
-#artist-name {
-    font-size: 1.6rem !important;
-    color: #664d03;
-    font-family: "Luckiest Guy", sans-serif;
-    margin: 0;
-    line-height: 1.1;
-}
-
-/* Progress Bar */
-.progress-bar-container {
-    width: 90%;
-    max-width: 900px;
-    height: 32px;
-    margin: 1px auto 0;
-    position: relative;
-    padding: 12px 0;
-}
-.progress-bar-bg {
-    background-color: #ddd;
-    border-radius: 10px;
-    height: 22px;
-    position: relative;
-    overflow: hidden;
-}
-.progress-bar-fill {
-    background-color: #422800;
-    height: 100%;
-    width: 0%;
-    transition: width 0.3s ease-in-out;
-    border-radius: 10px;
-}
-.progress-bar-circle {
-    width: 32px;
-    height: 32px;
-    background-color: #664d03;
-    border: 2px solid white;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 0%;
-    transform: translate(-50%, -50%);
-    transition: left 0.3s ease-in-out;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-}
-
-/* Playing Next Section (smaller) */
-.upcoming-tracks {
-    width: 100%;
-    max-width: 600px;
-    margin: 1.5rem auto 0 auto;
-    padding: 0;
-    background: none;
-    border: none;
-    box-shadow: none;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-
-.upcoming-tracks h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: #422800;
-    font-family: "Luckiest Guy", sans-serif;
-    text-align: center;
-}
-
-
-.queue-circles {
-    display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 2rem;
-    padding: 0.5rem 0 0 0;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
+   margin-top: -40px;
+ /* Moves it up on all screens */
+}
+        .background-icon {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.02);
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .background-icon.large {
+            font-size: 3rem;
+        }
+
+        .background-icon.small {
+            font-size: 1.2rem;
+        }
+
+        .left-panel {
+            flex: 2;
+            background: #2D524A;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+
+        .right-panel {
+            flex: 1;
+            background: #fbeee0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 60px;
+        }
+
+        .dice-logo {
+            width: 48px;
+            height: 48px;
+        }
+
+        .logo-text {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .player-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .player-content {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        .album-art-container {
+            width: 280px;
+            height: 280px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        #album-art {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .track-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .track-info h2 {
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+
+        .track-info .artist {
+            font-size: 24px;
+            color: #4ecdc4;
+            font-weight: 500;
+        }
+
+        .progress-container {
+            margin-bottom: 16px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #444;
+            border-radius: 3px;
+            position: relative;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        #progress-bar-fill {
+            width: 35%;
+            height: 100%;
+            background: #4ecdc4;
+            border-radius: 3px;
+            position: relative;
+            transition: width 0.3s ease;
+        }
+
+        #progress-bar-circle {
+            position: absolute;
+            left: 35%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: left 0.3s ease;
+        }
+
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+  .queue-section h1 {
+    font-size: 70px;
+    font-weight: 900;
+    color: #2D524A;
+    text-align: left;
+    line-height: 1.1;
+    margin-bottom: 48px;
+    margin-top: 0;
+    letter-spacing: -0.02em;
+    position: relative;
+    left: -50px;   /* Move more to the left */
+    top: -60px;    /* Raise it further up */
 }
 
-.queue-wrapper {
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90px;
-    margin: 8px;
-    text-align: center;
-}
+    
 
-.queue-item {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 2px solid #422800;
-    box-shadow: #422800 4px 4px 0 0;
-    margin: 0 auto;
-}
+      
 
-.queue-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    animation: none !important;
-    transform: none !important;
-    transition: transform 0.1s linear;
-}
+        .track-title {
+            font-weight: 600;
+            color: #422800;
+            font-size: 14px;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-.queue-text {
-    text-align: center;
-    margin-top: 6px;
-    width: 70px;
-    padding: 0 2px;
-}
+        .track-artist {
+            font-weight: 400;
+            color: #666;
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-.track-title, .track-artist {
-    width: 70px;
-    color: #422800;
-    font-family: "Luckiest Guy", sans-serif;
-    margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: center;
-    padding: 0 2px;
-    box-sizing: border-box;
-}
+        .empty-queue {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            font-style: italic;
+        }
 
-.track-title {
-    font-size: 0.7rem;
-    margin-bottom: 2px;
-}
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .left-panel,
+            .right-panel {
+                flex: none;
+            }
+            
+            .left-panel {
+                padding: 24px;
+            }
+            
+            .right-panel {
+                padding: 24px;
+            }
+            
+            .player-content {
+                flex-direction: column;
+                gap: 24px;
+                text-align: center;
+            }
+            
+            .album-art-container {
+                width: 220px;
+                height: 220px;
+            }
+            
+            .track-info h2 {
+                font-size: 32px;
+            }
+            
+            .track-info .artist {
+                font-size: 18px;
+            }
+            
+            .queue-section h1 {
+                font-size: 28px;
+            }
 
-.track-artist {
-    font-size: 0.7rem;
-    color: #664d03;
-}
-
-/* QR Code Section */
-.qr-section {
-    min-width: 320px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-right: 32px; /* Add this line */
-}
-.qr-section h2, .qr-section h3 {
-    color: #422800;
-    font-family: "Luckiest Guy", sans-serif;
-    font-size: 2rem;
-    margin: 2rem 0 1rem;
-    text-align: center;
-}
-
-.qr-code {
-    max-width: 600px;
-    width: 100%;
-    height: auto;
-    min-width: 400px;
-    min-height: 400px;
-    padding: 3rem;
-    border: 4px solid #422800;
-    border-radius: 30px;
-    box-shadow: #422800 6px 6px 0 0;
-    margin: 0 auto;
-    display: block;
-    /* Remove margin-right here */
-}
-/* Empty Queue State */
-.empty-queue {
-    color: #422800;
-    font-family: "Luckiest Guy", sans-serif;
-    font-size: 2rem;
-    padding: 1rem;
-    text-align: center;
-    width: 100%;
-}
-
-/* Responsive Styles */
-@media (max-width: 900px) {
-    .album-container {
-        width: 250px;
-        height: 250px;
-        margin: 1rem;
-    }
-    .rotating-album, .album-art {
-        width: 100%;
-        height: 100%;
-    }
-    .now-playing-and-next {
-        padding: 1.2rem 0.5rem;
-    }
-}
-
-@media (max-width: 768px) {
-    body {
-        padding-left: 0;
-    }
-    .container {
-        padding-right: 0;
-    }
-    .queue-display {
-        flex-direction: column;
-        gap: 1rem;
-    }
-    .now-playing-and-next {
-        margin: 1rem 0;
-        padding: 1rem 0.5rem;
-    }
-    .album-container {
-        width: 180px;
-        height: 180px;
-        margin: 0.5rem;
-    }
-    .track-info h3,
-    #track-name {
-        font-size: 1.3rem !important;
-    }
-    #artist-name {
-        font-size: 1rem !important;
-    }
-    .upcoming-tracks h2 {
-        font-size: 1rem;
-    }
-    .queue-wrapper {
-        width: 60px;
-    }
-    .queue-item {
-        width: 40px;
-        height: 40px;
-    }
-    .queue-text {
-        width: 40px;
-    }
-    .track-title, .track-artist {
-        font-size: 0.5rem;
-        width: 40px;
-    }
-    .qr-code {
-        max-width: 180px;
-        padding: 0.5rem;
-    }
-}
+      
+            #qr {
+                width: 160px;
+                height: 160px;
+            }
+        }
